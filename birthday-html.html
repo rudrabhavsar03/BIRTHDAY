@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Shyamal! 🎂</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .animate-fade-in {
+            animation: fadeIn 1s ease-out;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+    </style>
+</head>
+<body>
+    <div id="app"></div>
+
+    <script>
+        let currentPage = 'countdown';
+        let isBirthday = false;
+        let showQuestion = false;
+        let answer = '';
+        let error = '';
+        let showFinalMessage = false;
+
+        const targetDate = new Date('2025-12-27T00:00:00-05:00');
+
+        // Photo URLs - REPLACE THESE WITH YOUR ACTUAL PHOTO URLS
+        const photos = [
+            'https://images.unsplash.com/photo-1511988617509-a57c8a288659?w=400',
+            'https://images.unsplash.com/photo-1530281700549-e82e7bf110d6?w=400',
+            'https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?w=400',
+            'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=400',
+            'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=400',
+            'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=400',
+            'https://images.unsplash.com/photo-1527525443983-6e60c75fff46?w=400',
+            'https://images.unsplash.com/photo-1506869640319-fe1a24fd76dc?w=400',
+        ];
+
+        function calculateTimeLeft() {
+            const now = new Date();
+            const difference = targetDate - now;
+
+            if (difference <= 0) {
+                isBirthday = true;
+                return { days: 0, hours: 0, minutes: 0, seconds: 0 };
+            }
+
+            return {
+                days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+                hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+                minutes: Math.floor((difference / 1000 / 60) % 60),
+                seconds: Math.floor((difference / 1000) % 60)
+            };
+        }
+
+        function handleSubmit() {
+            const normalizedAnswer = answer.toLowerCase().trim();
+            
+            if (currentPage === 'question1') {
+                if (normalizedAnswer === 'red shirt' || normalizedAnswer === 'redshirt') {
+                    currentPage = 'photos';
+                    answer = '';
+                    error = '';
+                } else {
+                    error = 'Not quite! Think about the color and type of clothing 👕';
+                }
+            } else if (currentPage === 'question2') {
+                if (normalizedAnswer === 'sev usal' || normalizedAnswer === 'sevusal') {
+                    currentPage = 'letter';
+                    answer = '';
+                    error = '';
+                } else {
+                    error = 'Hmm, not quite! Think about your favorite spicy snack 🌶️';
+                }
+            } else if (currentPage === 'letter') {
+                if (normalizedAnswer.includes('april 10') || normalizedAnswer.includes('10 april') || 
+                    normalizedAnswer.includes('april 17') || normalizedAnswer.includes('17 april')) {
+                    currentPage = 'final';
+                    answer = '';
+                    error = '';
+                    setTimeout(() => { showFinalMessage = true; render(); }, 1000);
+                } else {
+                    error = 'Not quite! Think about a special April date we share 💝';
+                }
+            }
+            render();
+        }
+
+        function render() {
+            const app = document.getElementById('app');
+            
+            if (!isBirthday && currentPage === 'countdown') {
+                const timeLeft = calculateTimeLeft();
+                app.innerHTML = `
+                    <div class="min-h-screen bg-gradient-to-br from-purple-400 via-pink-400 to-blue-400 flex items-center justify-center p-4">
+                        <div class="text-center">
+                            <div class="mb-8 flex justify-center gap-4">
+                                <span class="text-6xl animate-pulse">✨</span>
+                                <span class="text-6xl animate-bounce">🎁</span>
+                                <span class="text-6xl animate-pulse" style="animation-delay: 0.4s">✨</span>
+                            </div>
+                            
+                            <h1 class="text-5xl md:text-7xl font-bold text-white mb-4 drop-shadow-lg">
+                                Something Special<br/>is Coming...
+                            </h1>
+                            
+                            <div class="bg-white/20 backdrop-blur-md rounded-3xl p-8 md:p-12 mt-12 shadow-2xl">
+                                <div class="grid grid-cols-4 gap-4 md:gap-8">
+                                    <div class="text-center">
+                                        <div class="bg-white/30 backdrop-blur-sm rounded-2xl p-4 md:p-6 mb-2">
+                                            <span class="text-4xl md:text-6xl font-bold text-white">${timeLeft.days}</span>
+                                        </div>
+                                        <span class="text-white text-sm md:text-lg font-semibold uppercase tracking-wider">days</span>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="bg-white/30 backdrop-blur-sm rounded-2xl p-4 md:p-6 mb-2">
+                                            <span class="text-4xl md:text-6xl font-bold text-white">${timeLeft.hours}</span>
+                                        </div>
+                                        <span class="text-white text-sm md:text-lg font-semibold uppercase tracking-wider">hours</span>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="bg-white/30 backdrop-blur-sm rounded-2xl p-4 md:p-6 mb-2">
+                                            <span class="text-4xl md:text-6xl font-bold text-white">${timeLeft.minutes}</span>
+                                        </div>
+                                        <span class="text-white text-sm md:text-lg font-semibold uppercase tracking-wider">minutes</span>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="bg-white/30 backdrop-blur-sm rounded-2xl p-4 md:p-6 mb-2">
+                                            <span class="text-4xl md:text-6xl font-bold text-white">${timeLeft.seconds}</span>
+                                        </div>
+                                        <span class="text-white text-sm md:text-lg font-semibold uppercase tracking-wider">seconds</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-8 flex justify-center gap-2">
+                                <span class="text-2xl text-red-300 animate-pulse">❤️</span>
+                                <span class="text-2xl text-red-400 animate-pulse" style="animation-delay: 0.2s">❤️</span>
+                                <span class="text-2xl text-red-300 animate-pulse" style="animation-delay: 0.4s">❤️</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else if (isBirthday && !showQuestion && currentPage === 'countdown') {
+                app.innerHTML = `
+                    <div class="min-h-screen bg-gradient-to-br from-yellow-300 via-pink-300 to-purple-400 flex items-center justify-center p-4 overflow-hidden relative">
+                        ${[...Array(20)].map((_, i) => `
+                            <div class="absolute text-4xl animate-bounce" style="left: ${Math.random() * 100}%; top: ${Math.random() * 100}%; animation-delay: ${Math.random() * 2}s; animation-duration: ${2 + Math.random() * 2}s">
+                                🎉
+                            </div>
+                        `).join('')}
+                        
+                        <div class="relative z-10 bg-white/30 backdrop-blur-md rounded-3xl p-12 md:p-20 shadow-2xl text-center">
+                            <h1 class="text-6xl md:text-8xl font-bold text-white mb-6 drop-shadow-lg animate-pulse">
+                                🎂 HAPPY BIRTHDAY! 🎂
+                            </h1>
+                            <p class="text-2xl md:text-4xl text-white font-semibold mb-8">
+                                Your special day is finally here! ✨
+                            </p>
+                            <button onclick="startAdventure()" class="bg-white text-purple-600 px-8 py-4 rounded-full text-xl font-bold hover:bg-purple-100 transform hover:scale-105 transition-all shadow-lg">
+                                Let's Begin! 🎁
+                            </button>
+                        </div>
+                    </div>
+                `;
+            } else if (currentPage === 'question1') {
+                app.innerHTML = `
+                    <div class="min-h-screen bg-gradient-to-br from-blue-400 via-purple-400 to-pink-400 flex items-center justify-center p-4">
+                        <div class="bg-white/90 backdrop-blur-sm rounded-3xl p-8 md:p-12 max-w-2xl w-full shadow-2xl">
+                            <div class="text-center mb-8">
+                                <div class="text-6xl mb-4">🎮</div>
+                                <h2 class="text-3xl md:text-4xl font-bold text-purple-600 mb-4">First Challenge!</h2>
+                                <p class="text-xl text-gray-700 font-medium">What did you wear on your last birthday?</p>
+                            </div>
+                            <div class="space-y-6">
+                                <input type="text" id="answerInput" value="${answer}" placeholder="Type your answer here..." class="w-full px-6 py-4 text-lg border-2 border-purple-300 rounded-2xl focus:outline-none focus:border-purple-500 focus:ring-4 focus:ring-purple-200">
+                                ${error ? `<div class="bg-red-100 border-2 border-red-300 text-red-700 px-4 py-3 rounded-2xl text-center">${error}</div>` : ''}
+                                <button onclick="submitAnswer()" class="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white px-8 py-4 rounded-2xl text-xl font-bold hover:from-purple-600 hover:to-pink-600 transform hover:scale-105 transition-all shadow-lg">Submit Answer ✨</button>
+                            </div>
+                            <div class="mt-6 text-center text-sm text-gray-600">💡 Hint: Think about the color and what you wore on top!</div>
+                        </div>
+                    </div>
+                `;
+                setupInputListener();
+            } else if (currentPage === 'photos') {
+                renderPhotosPage();
+            } else if (currentPage === 'letter') {
+                renderLetterPage();
+            } else if (currentPage === 'final') {
+                renderFinalPage();
+            }
+        }
+
+        function renderPhotosPage() {
+            const app = document.getElementById('app');
+            app.innerHTML = `
+                <div class="min-h-screen bg-gradient-to-br from-pink-300 via-purple-300 to-indigo-400 p-4 md:p-8 overflow-hidden relative">
+                    <div class="absolute top-10 left-10 text-6xl animate-bounce">🎈</div>
+                    <div class="absolute top-20 right-20 text-5xl animate-pulse">🎊</div>
+                    <div class="absolute bottom-20 left-20 text-5xl animate-bounce" style="animation-delay: 0.5s">🎁</div>
+                    <div class="absolute bottom-32 right-10 text-6xl animate-pulse" style="animation-delay: 1s">✨</div>
+                    
+                    <div class="max-w-6xl mx-auto relative z-10">
+                        <div class="text-center mb-16 pt-8">
+                            <div class="relative inline-block mb-8">
+                                <div class="text-9xl filter drop-shadow-2xl animate-bounce">🎂</div>
+                                <div class="absolute -top-4 -right-4 text-4xl animate-ping">🕯️</div>
+                                <div class="absolute -top-4 -left-4 text-4xl animate-ping" style="animation-delay: 0.3s">🕯️</div>
+                            </div>
+                            
+                            <div class="relative">
+                                <h1 class="text-7xl md:text-9xl font-black mb-2 tracking-tight">
+                                    ${'HAPPY'.split('').map((letter, i) => `<span class="inline-block animate-bounce" style="animation-delay: ${(i + 1) * 0.1}s; color: ${['#ec4899', '#a855f7', '#3b82f6', '#ec4899', '#fde047'][i]}; text-shadow: 0 10px 20px rgba(0,0,0,0.3)">${letter}</span>`).join('')}
+                                </h1>
+                                <h1 class="text-7xl md:text-9xl font-black mb-6 tracking-tight">
+                                    ${'BIRTHDAY!'.split('').map((letter, i) => `<span class="inline-block animate-bounce" style="animation-delay: ${(i + 6) * 0.1}s; color: ${['#4ade80', '#60a5fa', '#a78bfa', '#f472b6', '#fbbf24', '#f87171', '#60a5fa', '#a78bfa', '#ec4899'][i]}; text-shadow: 0 10px 20px rgba(0,0,0,0.3)">${letter}</span>`).join('')}
+                                </h1>
+                                <div class="absolute -top-8 left-1/4 text-4xl animate-spin" style="animation-duration: 3s">✨</div>
+                                <div class="absolute -top-8 right-1/4 text-4xl animate-spin" style="animation-duration: 3s; animation-delay: 1s">✨</div>
+                                <div class="absolute top-1/2 -left-12 text-3xl animate-pulse">⭐</div>
+                                <div class="absolute top-1/2 -right-12 text-3xl animate-pulse" style="animation-delay: 0.5s">⭐</div>
+                            </div>
+                            
+                            <div class="bg-gradient-to-r from-pink-400/30 via-purple-400/30 to-blue-400/30 backdrop-blur-md rounded-full px-8 py-4 inline-block mb-8 border-4 border-white/50 shadow-2xl">
+                                <p class="text-2xl md:text-4xl text-white font-black drop-shadow-lg">🌟 You're One in a Million! 🌟</p>
+                            </div>
+                            <div class="text-6xl mb-4 animate-bounce">📸</div>
+                            <h2 class="text-4xl md:text-5xl font-bold text-white mb-4 drop-shadow-lg">Our Memory Lane 📸</h2>
+                            <p class="text-xl md:text-2xl text-white/90 font-medium">Every moment with you is a treasure ✨💝</p>
+                        </div>
+
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+                            ${photos.map((photo, index) => `
+                                <div class="relative group overflow-hidden rounded-3xl shadow-2xl transform hover:scale-110 hover:rotate-2 transition-all duration-500" style="animation-delay: ${index * 0.15}s; animation: fadeIn 0.8s ease-in">
+                                    <div class="absolute -inset-1 bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 rounded-3xl blur opacity-75 group-hover:opacity-100 transition-opacity"></div>
+                                    <div class="relative">
+                                        <img src="${photo}" alt="Memory ${index + 1}" class="w-full h-72 object-cover rounded-3xl">
+                                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-end pb-6 rounded-3xl">
+                                            <span class="text-4xl mb-2 animate-pulse">❤️</span>
+                                            <span class="text-white font-bold text-lg">Memory #${index + 1}</span>
+                                        </div>
+                                        <div class="absolute top-3 right-3 text-3xl opacity-0 group-hover:opacity-100 transition-opacity">
+                                            ${['💖', '⭐', '🌈', '🦋', '🌸', '🎨', '🎭', '🎪'][index]}
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+
+                        <div class="flex items-center justify-center gap-4 mb-8">
+                            <div class="h-1 w-32 bg-gradient-to-r from-transparent via-white to-transparent rounded-full"></div>
+                            <span class="text-4xl">💫</span>
+                            <div class="h-1 w-32 bg-gradient-to-r from-transparent via-white to-transparent rounded-full"></div>
+                        </div>
+
+                        <div class="text-center mb-8">
+                            <div class="text-5xl mb-2 animate-bounce">⬇️</div>
+                            <p class="text-white text-lg mt-2">Scroll down for the next challenge!</p>
+                        </div>
+
+                        <div class="bg-white/90 backdrop-blur-sm rounded-3xl p-8 md:p-12 max-w-2xl mx-auto shadow-2xl">
+                            <div class="text-center mb-8">
+                                <div class="text-6xl mb-4">🍽️</div>
+                                <h2 class="text-3xl md:text-4xl font-bold text-purple-600 mb-4">Second Challenge!</h2>
+                                <p class="text-xl text-gray-700 font-medium">What's your favourite food?</p>
+                            </div>
+                            <div class="space-y-6">
+                                <input type="text" id="answerInput" value="${answer}" placeholder="Type your answer here..." class="w-full px-6 py-4 text-lg border-2 border-purple-300 rounded-2xl focus:outline-none focus:border-purple-500 focus:ring-4 focus:ring-purple-200">
+                                ${error ? `<div class="bg-red-100 border-2 border-red-300 text-red-700 px-4 py-3 rounded-2xl text-center">${error}</div>` : ''}
+                                <button onclick="submitAnswer()" class="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white px-8 py-4 rounded-2xl text-xl font-bold hover:from-purple-600 hover:to-pink-600 transform hover:scale-105 transition-all shadow-lg">Submit Answer ✨</button>
+                            </div>
+                            <div class="mt-6 text-center text-sm text-gray-600">💡 Hint: It's a spicy and savory snack you love!</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            setupInputListener();
+        }
+
+        function renderLetterPage() {
+            const app = document.getElementById('app');
+            app.innerHTML = `
+                <div class="min-h-screen bg-gradient-to-br from-amber-100 via-rose-100 to-purple-200 p-4 md:p-8 overflow-hidden relative">
+                    <div class="absolute top-20 left-10 text-5xl animate-pulse opacity-50">💌</div>
+                    <div class="absolute top-40 right-20 text-4xl animate-bounce opacity-50">💝</div>
+                    <div class="absolute bottom-32 left-20 text-5xl animate-pulse opacity-50" style="animation-delay: 1s">💖</div>
+                    <div class="absolute bottom-20 right-10 text-4xl animate-bounce opacity-50" style="animation-delay: 0.5s">✉️</div>
+                    
+                    <div class="max-w-4xl mx-auto relative z-10 py-12">
+                        <div class="text-center mb-12">
+                            <div class="text-8xl mb-6 animate-bounce">💌</div>
+                            <h1 class="text-5xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-600 via-purple-600 to-blue-600 mb-4 drop-shadow-lg">A Letter Just For You</h1>
+                            <p class="text-xl md:text-2xl text-gray-700 font-medium">Written from the heart 💝</p>
+                        </div>
+
+                        <div class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-2xl p-8 md:p-12 border-4 border-pink-200 relative">
+                            <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-yellow-50/50 to-pink-50/50 rounded-3xl pointer-events-none"></div>
+                            
+                            <div class="flex justify-between items-center mb-8 relative z-10">
+                                <div class="text-3xl">🎈</div>
+                                <div class="text-center">
+                                    <p class="text-gray-500 text-lg italic">To my amazing friend</p>
+                                </div>
+                                <div class="text-3xl">🎈</div>
+                            </div>
+
+                            <div class="relative z-10 text-gray-800 space-y-6 text-lg md:text-xl leading-relaxed">
+                                <p class="font-bold text-2xl">Dear Shyamal</p>
+                                
+                                <p class="indent-8">You know I never start my letters with "dear" coz deva and I had an inside joke of dear hehe but you, you're my dearest from day 1. I still remember the Saturday first I met you, a normal boy who gave me training...however that five-corner closing shift we had together was the day I knew that this person has something! I was always forced to trust you, I always felt how deeply you understand people and situations that was something I always liked about you so much and the honesty you have for whatever you do is something that inspired me a lot.</p>
+                                
+                                <p class="indent-8">Back to story so yaa ofc thanks to dosi who invited me to his "boyfriend's birthday randomly the same day and in the beginning I was unsure about it but then I like to make new friends so yaa obv I was going to come. That day first time I saw someone drink so much and not blackout lol. Then your birthday, fuck I still feel embarrassed about being so underdressed :( but still my jadiya was looking so cute..</p>
+                                
+                                <p class="indent-8">Finally New year day, man I don't know how easily I just told everything to you and you helped me so much. That night I knew this man is a gentleman, whoever will be his partner will be lucky and hehe I am the luckiest. The Niagara trip broo that was something I will never forgive in my life. You bitch you why did you look at me like that the whole trip??? Best experience ever. And my love then all the invitations to have food and spent time together ufff!! I miss those days.</p>
+                                
+                                <p class="indent-8">End - 10th April 2025, you happpened to me. Shyamal I genuinely am happy that we are together and I actually feel safe with you. Thank you for being my sleeping pill and my crazy partner. You have some single child issues hehe but it's ok I am good with babies, I will take are of you don't worry. Thank you Shyam for being there and helping me in ever aspect. I have loved ever version of you and will further do. Happiest birthday and healthiest life ahead. Gonna annoy you always.</p>
+                                
+                                <p class="mt-8 font-medium">Lots of love</p>
+                                
+                                <p class="font-bold text-right mr-8 text-2xl">Your Bacchaa ❤️</p>
+                            </div>
+
+                            <div class="absolute top-4 left-4 text-pink-300 text-6xl opacity-30">❝</div>
+                            <div class="absolute bottom-4 right-4 text-pink-300 text-6xl opacity-30">❞</div>
+                        </div>
+
+                        <div class="text-center mt-12 mb-8">
+                            <div class="text-5xl mb-2 animate-bounce">⬇️</div>
+                            <p class="text-gray-700 text-lg mt-2 font-medium">Keep scrolling for the final challenge!</p>
+                        </div>
+
+                        <div class="bg-white/90 backdrop-blur-sm rounded-3xl p-8 md:p-12 shadow-2xl border-4 border-purple-200">
+                            <div class="text-center mb-8">
+                                <div class="text-6xl mb-4">📅</div>
+                                <h2 class="text-3xl md:text-4xl font-bold text-purple-600 mb-4">Final Challenge!</h2>
+                                <p class="text-xl text-gray-700 font-medium">Specialest day in US? Write the date</p>
+                            </div>
+                            <div class="space-y-6">
+                                <input type="text" id="answerInput" value="${answer}" placeholder="Type your answer here... (e.g., April 10)" class="w-full px-6 py-4 text-lg border-2 border-purple-300 rounded-2xl focus:outline-none focus:border-purple-500 focus:ring-4 focus:ring-purple-200">
+                                ${error ? `<div class="bg-red-100 border-2 border-red-300 text-red-700 px-4 py-3 rounded-2xl text-center">${error}</div>` : ''}
+                                <button onclick="submitAnswer()" class="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white px-8 py-4 rounded-2xl text-xl font-bold hover:from-purple-600 hover:to-pink-600 transform hover:scale-105 transition-all shadow-lg">Submit Answer ✨</button>
+                            </div>
+                            <div class="mt-6 text-center text-sm text-gray-600">💡 Hint: Think about a special date we share in April!</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            setupInputListener();
+        }
+
+        function renderFinalPage() {
+            const app = document.getElementById('app');
+            app.innerHTML = `
+                <div class="min-h-screen bg-gradient-to-br from-rose-300 via-pink-200 to-purple-300 p-4 md:p-8 overflow-hidden relative flex items-center justify-center">
+                    ${[...Array(50)].map((_, i) => `
+                        <div class="absolute text-white animate-pulse" style="left: ${Math.random() * 100}%; top: ${Math.random() * 100}%; font-size: ${Math.random() * 20 + 10}px; animation-delay: ${Math.random() * 3}s; animation-duration: ${2 + Math.random() * 3}s">✨</div>
+                    `).join('')}
+
+                    <div class="fixed bottom-6 right-6 rounded-2xl overflow-hidden shadow-2xl border-4 border-white/50 z-50 w-80 md:w-96">
+                        <iframe width="100%" height="220" src="https://www.youtube.com/embed/iJDD6CQvLNM?autoplay=1&loop=1&playlist=iJDD6CQvLNM" title="Dil ye bekarar kyu hai" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+
+                    <div class="max-w-4xl mx-auto relative z-10 text-center">
+                        ${showFinalMessage ? `
+                            <div class="animate-fade-in">
+                                <div class="bg-white/30 backdrop-blur-lg rounded-3xl p-8 md:p-12 shadow-2xl border-2 border-white/50">
+                                    <div class="text-8xl mb-6 animate-bounce">🎁</div>
+                                    
+                                    <h1 class="text-5xl md:text-7xl font-black text-purple-800 mb-8 drop-shadow-lg">You Made It! 🎉</h1>
+                                    
+                                    <div class="bg-gradient-to-r from-pink-400/30 to-purple-400/30 rounded-2xl p-6 md:p-8 mb-8 border-2 border-purple-300">
+                                        <p class="text-2xl md:text-3xl text-purple-900 font-bold leading-relaxed">Happiest birthday Love! 💝</p>
+                                        <p class="text-xl md:text-2xl text-purple-800 mt-4 leading-relaxed font-medium">Hope this thing stays with you always</p>
+                                        <p class="text-lg md:text-xl text-purple-700 italic mt-2">(even if I don't lol) 😄</p>
+                                    </div>
+
+                                    <div class="flex justify-center gap-4 mb-6">
+                                        <span class="text-5xl animate-pulse">💖</span>
+                                        <span class="text-5xl animate-pulse" style="animation-delay: 0.3s">🌟</span>
+                                        <span class="text-5xl animate-pulse" style="animation-delay: 0.6s">🎈</span>
+                                    </div>
+
+                                    <p class="text-purple-700 text-lg md:text-xl font-medium italic">Thank you for being an amazing friend ✨</p>
+                                </div>
+
+                                <div class="mt-12 flex justify-center gap-3">
+                                    ${['❤️', '💕', '💖', '💝', '💗', '💓', '💞'].map((heart, i) => `
+                                        <div class="text-4xl animate-bounce" style="animation-delay: ${i * 0.2}s; animation-duration: ${1.5 + Math.random()}s">${heart}</div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+        }
+
+        function startAdventure() {
+            currentPage = 'question1';
+            showQuestion = true;
+            render();
+        }
+
+        function submitAnswer() {
+            const input = document.getElementById('answerInput');
+            if (input) {
+                answer = input.value;
+            }
+            handleSubmit();
+        }
+
+        function setupInputListener() {
+            const input = document.getElementById('answerInput');
+            if (input) {
+                input.addEventListener('input', (e) => {
+                    answer = e.target.value;
+                    error = '';
+                });
+                input.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        submitAnswer();
+                    }
+                });
+                input.focus();
+            }
+        }
+
+        // Update countdown every second
+        setInterval(() => {
+            if (currentPage === 'countdown' && !isBirthday) {
+                render();
+            }
+        }, 1000);
+
+        // Initial render
+        render();
+    </script>
+</body>
+</html>
