@@ -1,213 +1,211 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday Shyamal! 🎂</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Shyamal 🎂</title>
+<script src="https://cdn.tailwindcss.com"></script>
 
-    <style>
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fade-in { animation: fadeIn 1s ease-out; }
-        body { margin: 0; padding: 0; overflow-x: hidden; }
-    </style>
+<style>
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in { animation: fadeIn 1s ease-out; }
+body { margin: 0; padding: 0; overflow-x: hidden; }
+</style>
 </head>
 
 <body>
 <div id="app"></div>
 
 <script>
-/* =====================
-   STATE
-===================== */
+/* ================= STATE ================= */
 let currentPage = 'birthday';
 let answer = '';
 let error = '';
 let showFinalMessage = false;
 
-/* =====================
-   PHOTOS
-===================== */
+/* ================= PHOTOS ================= */
 const photos = [
-    'IMG-20250224-WA0018.jpg',
-    'IMG-20250418-WA0028.jpg',
-    'IMG-20250418-WA0065.jpg',
-    'IMG-20250527-WA0167.jpg',
-    'IMG-20250711-WA0036.jpg',
-    'IMG-20250717-WA0059.jpg',
-    'IMG-20250805-WA0015.jpg',
-    'IMG-20250905-WA0017.jpg',
+  'IMG-20250224-WA0018.jpg',
+  'IMG-20250418-WA0028.jpg',
+  'IMG-20250418-WA0065.jpg',
+  'IMG-20250527-WA0167.jpg',
+  'IMG-20250711-WA0036.jpg',
+  'IMG-20250717-WA0059.jpg',
+  'IMG-20250805-WA0015.jpg',
+  'IMG-20250905-WA0017.jpg'
 ];
 
-/* =====================
-   RENDER
-===================== */
+/* ================= RENDER ================= */
 function render() {
-    const app = document.getElementById('app');
+  const app = document.getElementById('app');
 
-    /* BIRTHDAY LANDING */
-    if (currentPage === 'birthday') {
-        app.innerHTML = `
-        <div class="min-h-screen bg-gradient-to-br from-yellow-300 via-pink-300 to-purple-400 flex items-center justify-center">
-            <div class="bg-white/30 p-16 rounded-3xl text-center shadow-2xl">
-                <h1 class="text-7xl font-black text-white mb-6 animate-pulse">🎂 HAPPY BIRTHDAY 🎂</h1>
-                <p class="text-3xl text-white mb-10">Your special day is here ✨</p>
-                <button onclick="startAdventure()"
-                    class="bg-white px-10 py-4 rounded-full text-xl font-bold text-purple-600 hover:scale-105 transition">
-                    Let’s Begin 🎁
-                </button>
-            </div>
-        </div>`;
-        return;
-    }
-
-    /* QUESTION 1 */
-    if (currentPage === 'question1') {
-        app.innerHTML = questionTemplate(
-            '🎮 First Challenge!',
-            'What did you wear on your last birthday?',
-            'Think about the color and what you wore on top 👕'
-        );
-        setupInput();
-        return;
-    }
-
-    /* PHOTOS + QUESTION 2 */
-    if (currentPage === 'photos') {
-        renderPhotos();
-        return;
-    }
-
-    /* LETTER */
-    if (currentPage === 'letter') {
-        renderLetter();
-        return;
-    }
-
-    /* FINAL */
-    if (currentPage === 'final') {
-        renderFinal();
-    }
-}
-
-/* =====================
-   TEMPLATES
-===================== */
-function questionTemplate(title, question, hint) {
-    return `
-    <div class="min-h-screen bg-gradient-to-br from-blue-400 via-purple-400 to-pink-400 flex items-center justify-center p-6">
-        <div class="bg-white rounded-3xl p-10 w-full max-w-xl shadow-2xl">
-            <h2 class="text-4xl font-bold text-purple-600 mb-4 text-center">${title}</h2>
-            <p class="text-xl text-center mb-6">${question}</p>
-            <input id="answerInput" class="w-full p-4 border-2 rounded-xl mb-4" placeholder="Your answer...">
-            ${error ? `<div class="text-red-600 mb-4">${error}</div>` : ''}
-            <button onclick="submitAnswer()"
-                class="w-full bg-purple-500 text-white py-4 rounded-xl font-bold">
-                Submit ✨
-            </button>
-            <p class="text-sm text-center mt-4 text-gray-600">💡 ${hint}</p>
-        </div>
+  if (currentPage === 'birthday') {
+    app.innerHTML = `
+    <div class="min-h-screen bg-gradient-to-br from-yellow-300 via-pink-300 to-purple-400 flex items-center justify-center">
+      <div class="bg-white/30 backdrop-blur-lg p-16 rounded-3xl text-center shadow-2xl z-10">
+        <h1 class="text-7xl font-black text-white mb-6 animate-pulse">🎂 HAPPY BIRTHDAY 🎂</h1>
+        <p class="text-3xl text-white mb-10">Your special day is here ✨</p>
+        <button onclick="startAdventure()"
+          class="bg-white px-10 py-4 rounded-full text-xl font-bold text-purple-600 hover:scale-105 transition">
+          Let’s Begin 🎁
+        </button>
+      </div>
     </div>`;
+    return;
+  }
+
+  if (currentPage === 'question1') {
+    app.innerHTML = questionTemplate(
+      '🎮 First Challenge!',
+      'What did you wear on your last birthday?',
+      'Think about the color and what you wore on top 👕'
+    );
+    setupInput();
+    return;
+  }
+
+  if (currentPage === 'photos') {
+    renderPhotos();
+    return;
+  }
+
+  if (currentPage === 'letter') {
+    renderLetter();
+    return;
+  }
+
+  if (currentPage === 'final') {
+    renderFinal();
+  }
 }
 
-/* =====================
-   ACTIONS
-===================== */
+/* ================= TEMPLATE ================= */
+function questionTemplate(title, question, hint) {
+  return `
+  <div class="min-h-screen bg-gradient-to-br from-blue-400 via-purple-400 to-pink-400 flex items-center justify-center p-6">
+    <div class="bg-white rounded-3xl p-10 w-full max-w-xl shadow-2xl relative z-20 pointer-events-auto">
+      <h2 class="text-4xl font-bold text-purple-600 mb-4 text-center">${title}</h2>
+      <p class="text-xl text-center mb-6">${question}</p>
+
+      <input
+        id="answerInput"
+        type="text"
+        autocomplete="off"
+        autocorrect="off"
+        autocapitalize="off"
+        spellcheck="false"
+        class="w-full p-4 border-2 rounded-xl mb-4 focus:outline-none focus:ring-4 focus:ring-purple-300"
+        placeholder="Type your answer here..."
+      />
+
+      ${error ? `<div class="text-red-600 mb-4 text-center">${error}</div>` : ''}
+
+      <button onclick="submitAnswer()"
+        class="w-full bg-purple-500 text-white py-4 rounded-xl font-bold hover:bg-purple-600 transition">
+        Submit ✨
+      </button>
+
+      <p class="text-sm text-center mt-4 text-gray-600">💡 ${hint}</p>
+    </div>
+  </div>`;
+}
+
+/* ================= ACTIONS ================= */
 function startAdventure() {
-    currentPage = 'question1';
-    render();
+  currentPage = 'question1';
+  render();
 }
 
 function submitAnswer() {
-    const val = document.getElementById('answerInput')?.value.toLowerCase().trim();
-    error = '';
+  const input = document.getElementById('answerInput');
+  if (!input) return;
 
-    if (currentPage === 'question1') {
-        if (val === 'red shirt' || val === 'redshirt') {
-            currentPage = 'photos';
-        } else error = 'Not quite! 👕';
-    }
+  const val = input.value.toLowerCase().trim();
+  error = '';
 
-    else if (currentPage === 'photos') {
-        if (val === 'sev usal' || val === 'sevusal') {
-            currentPage = 'letter';
-        } else error = 'Think spicy 🌶️';
-    }
+  if (currentPage === 'question1') {
+    if (val === 'red shirt' || val === 'redshirt') {
+      currentPage = 'photos';
+    } else error = 'Not quite! 👕';
+  }
+  else if (currentPage === 'photos') {
+    if (val === 'sev usal' || val === 'sevusal') {
+      currentPage = 'letter';
+    } else error = 'Think spicy 🌶️';
+  }
+  else if (currentPage === 'letter') {
+    if (val.includes('april 10') || val.includes('10 april')) {
+      currentPage = 'final';
+      setTimeout(() => showFinalMessage = true, 300);
+    } else error = 'Think April 💝';
+  }
 
-    else if (currentPage === 'letter') {
-        if (val.includes('april 10') || val.includes('10 april')) {
-            currentPage = 'final';
-            setTimeout(() => showFinalMessage = true, 500);
-        } else error = 'Think April 💝';
-    }
-
-    render();
+  render();
 }
 
-/* =====================
-   PAGES
-===================== */
+/* ================= PAGES ================= */
 function renderPhotos() {
-    document.getElementById('app').innerHTML = `
-    <div class="min-h-screen bg-gradient-to-br from-pink-300 to-purple-400 p-10">
-        <h1 class="text-6xl text-white font-black text-center mb-10">Our Memory Lane 📸</h1>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
-            ${photos.map(p => `<img src="${p}" class="rounded-3xl shadow-xl">`).join('')}
-        </div>
-        ${questionTemplate(
-            '🍽️ Second Challenge!',
-            'What’s your favourite food?',
-            'It’s spicy 🌶️'
-        )}
-    </div>`;
-    setupInput();
+  document.getElementById('app').innerHTML = `
+  <div class="min-h-screen bg-gradient-to-br from-pink-300 to-purple-400 p-10">
+    <h1 class="text-6xl text-white font-black text-center mb-10">Our Memory Lane 📸</h1>
+
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
+      ${photos.map(p => `<img src="${p}" class="rounded-3xl shadow-xl">`).join('')}
+    </div>
+
+    ${questionTemplate(
+      '🍽️ Second Challenge!',
+      'What’s your favourite food?',
+      'It’s spicy 🌶️'
+    )}
+  </div>`;
+  setupInput();
 }
 
 function renderLetter() {
-    document.getElementById('app').innerHTML = `
-    <div class="min-h-screen bg-gradient-to-br from-rose-100 to-purple-200 p-10">
-        <div class="max-w-4xl mx-auto bg-white rounded-3xl p-10 shadow-2xl">
-            <h1 class="text-5xl font-black mb-6 text-center">A Letter For You 💌</h1>
-            <p class="leading-relaxed text-lg">
-                Dear Shyamal… your letter stays exactly the same ❤️
-            </p>
-        </div>
-        ${questionTemplate(
-            '📅 Final Challenge!',
-            'Specialest day in US?',
-            'A date in April 💕'
-        )}
-    </div>`;
-    setupInput();
+  document.getElementById('app').innerHTML = `
+  <div class="min-h-screen bg-gradient-to-br from-amber-100 via-rose-100 to-purple-200 p-6">
+    <div class="max-w-4xl mx-auto bg-white/80 rounded-3xl p-10 shadow-2xl mb-10 relative z-10">
+      <h1 class="text-5xl font-black text-center mb-8">A Letter Just For You 💌</h1>
+      <p class="text-lg leading-relaxed text-gray-800">
+        Dear Shyamal, <br><br>
+        (Your friend’s full original letter goes here — unchanged ❤️)
+      </p>
+    </div>
+
+    ${questionTemplate(
+      '📅 Final Challenge!',
+      'Specialest day in US?',
+      'A date in April 💕'
+    )}
+  </div>`;
+  setupInput();
 }
 
 function renderFinal() {
-    document.getElementById('app').innerHTML = `
-    <div class="min-h-screen bg-gradient-to-br from-pink-300 to-purple-400 flex items-center justify-center">
-        ${showFinalMessage ? `
-        <div class="bg-white/40 p-12 rounded-3xl text-center animate-fade-in">
-            <h1 class="text-6xl font-black mb-6">🎉 You Made It 🎉</h1>
-            <p class="text-2xl">Happiest Birthday Love 💖</p>
-        </div>` : ''}
-    </div>`;
+  document.getElementById('app').innerHTML = `
+  <div class="min-h-screen bg-gradient-to-br from-pink-300 to-purple-400 flex items-center justify-center">
+    ${showFinalMessage ? `
+      <div class="bg-white/40 p-12 rounded-3xl text-center animate-fade-in">
+        <h1 class="text-6xl font-black mb-6">🎉 You Made It 🎉</h1>
+        <p class="text-2xl">Happiest Birthday Love 💖</p>
+      </div>
+    ` : ''}
+  </div>`;
 }
 
-/* =====================
-   INPUT
-===================== */
+/* ================= INPUT ================= */
 function setupInput() {
-    const i = document.getElementById('answerInput');
-    if (!i) return;
-    i.focus();
-    i.onkeypress = e => e.key === 'Enter' && submitAnswer();
+  const i = document.getElementById('answerInput');
+  if (!i) return;
+  setTimeout(() => i.focus(), 50);
+  i.onkeydown = e => e.key === 'Enter' && submitAnswer();
 }
 
-/* =====================
-   INIT
-===================== */
+/* ================= INIT ================= */
 render();
 </script>
 </body>
