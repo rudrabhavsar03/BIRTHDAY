@@ -20,15 +20,17 @@
 <div id="app"></div>
 
 <script>
-/* =======================
-   CONFIG
-======================= */
-const TEST_MODE = false; // 👉 set true to test in 5 seconds
+/* =====================
+   STATE
+===================== */
+let currentPage = 'birthday';
+let answer = '';
+let error = '';
+let showFinalMessage = false;
 
-const targetDate = TEST_MODE
-    ? new Date(Date.now() + 5000)
-    : new Date('2025-12-27T00:00:00-05:00');
-
+/* =====================
+   PHOTOS
+===================== */
 const photos = [
     'IMG-20250224-WA0018.jpg',
     'IMG-20250418-WA0028.jpg',
@@ -40,65 +42,19 @@ const photos = [
     'IMG-20250905-WA0017.jpg',
 ];
 
-/* =======================
-   STATE
-======================= */
-let currentPage = 'countdown';
-let isBirthday = false;
-let showFinalMessage = false;
-let answer = '';
-let error = '';
-
-/* =======================
-   TIME
-======================= */
-function getTimeLeft() {
-    const diff = targetDate - new Date();
-    if (diff <= 0) return { days: 0, hours: 0, minutes: 0, seconds: 0 };
-
-    return {
-        days: Math.floor(diff / 86400000),
-        hours: Math.floor((diff / 3600000) % 24),
-        minutes: Math.floor((diff / 60000) % 60),
-        seconds: Math.floor((diff / 1000) % 60)
-    };
-}
-
-/* =======================
+/* =====================
    RENDER
-======================= */
+===================== */
 function render() {
     const app = document.getElementById('app');
 
-    /* COUNTDOWN */
-    if (currentPage === 'countdown' && !isBirthday) {
-        const t = getTimeLeft();
-        app.innerHTML = `
-        <div class="min-h-screen bg-gradient-to-br from-purple-400 via-pink-400 to-blue-400 flex items-center justify-center">
-            <div class="text-center">
-                <h1 class="text-6xl font-bold text-white mb-10">Something Special Is Coming ✨</h1>
-                <div class="grid grid-cols-4 gap-6">
-                    ${['days','hours','minutes','seconds'].map((l,i)=>`
-                        <div>
-                            <div class="bg-white/30 rounded-2xl p-6 text-5xl font-bold text-white">
-                                ${Object.values(t)[i]}
-                            </div>
-                            <div class="text-white mt-2 uppercase">${l}</div>
-                        </div>
-                    `).join('')}
-                </div>
-            </div>
-        </div>`;
-        return;
-    }
-
     /* BIRTHDAY LANDING */
-    if (currentPage === 'countdown' && isBirthday) {
+    if (currentPage === 'birthday') {
         app.innerHTML = `
         <div class="min-h-screen bg-gradient-to-br from-yellow-300 via-pink-300 to-purple-400 flex items-center justify-center">
             <div class="bg-white/30 p-16 rounded-3xl text-center shadow-2xl">
                 <h1 class="text-7xl font-black text-white mb-6 animate-pulse">🎂 HAPPY BIRTHDAY 🎂</h1>
-                <p class="text-3xl text-white mb-10">Your day is finally here ✨</p>
+                <p class="text-3xl text-white mb-10">Your special day is here ✨</p>
                 <button onclick="startAdventure()"
                     class="bg-white px-10 py-4 rounded-full text-xl font-bold text-purple-600 hover:scale-105 transition">
                     Let’s Begin 🎁
@@ -137,9 +93,9 @@ function render() {
     }
 }
 
-/* =======================
+/* =====================
    TEMPLATES
-======================= */
+===================== */
 function questionTemplate(title, question, hint) {
     return `
     <div class="min-h-screen bg-gradient-to-br from-blue-400 via-purple-400 to-pink-400 flex items-center justify-center p-6">
@@ -157,9 +113,9 @@ function questionTemplate(title, question, hint) {
     </div>`;
 }
 
-/* =======================
+/* =====================
    ACTIONS
-======================= */
+===================== */
 function startAdventure() {
     currentPage = 'question1';
     render();
@@ -191,9 +147,9 @@ function submitAnswer() {
     render();
 }
 
-/* =======================
+/* =====================
    PAGES
-======================= */
+===================== */
 function renderPhotos() {
     document.getElementById('app').innerHTML = `
     <div class="min-h-screen bg-gradient-to-br from-pink-300 to-purple-400 p-10">
@@ -215,7 +171,9 @@ function renderLetter() {
     <div class="min-h-screen bg-gradient-to-br from-rose-100 to-purple-200 p-10">
         <div class="max-w-4xl mx-auto bg-white rounded-3xl p-10 shadow-2xl">
             <h1 class="text-5xl font-black mb-6 text-center">A Letter For You 💌</h1>
-            <p class="leading-relaxed text-lg">Dear Shyamal... (your letter stays untouched ❤️)</p>
+            <p class="leading-relaxed text-lg">
+                Dear Shyamal… your letter stays exactly the same ❤️
+            </p>
         </div>
         ${questionTemplate(
             '📅 Final Challenge!',
@@ -237,9 +195,9 @@ function renderFinal() {
     </div>`;
 }
 
-/* =======================
+/* =====================
    INPUT
-======================= */
+===================== */
 function setupInput() {
     const i = document.getElementById('answerInput');
     if (!i) return;
@@ -247,16 +205,9 @@ function setupInput() {
     i.onkeypress = e => e.key === 'Enter' && submitAnswer();
 }
 
-/* =======================
-   TIMER
-======================= */
-setInterval(() => {
-    if (currentPage === 'countdown') {
-        isBirthday = new Date() >= targetDate;
-        render();
-    }
-}, 1000);
-
+/* =====================
+   INIT
+===================== */
 render();
 </script>
 </body>
